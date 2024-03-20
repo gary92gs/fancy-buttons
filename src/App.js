@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useReducer } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
@@ -16,24 +16,19 @@ function App() {
     });
   };
 
-  const [angeryApp, setAngeryApp] = useState(0);
-  const increaseAppAnger = () => {
-    setAngeryApp((prev) => {
-      if (prev + 1 <= 10) {
-        return prev + 1;
-      }
-      return 0;
-    });
-  };
+  const [angryApp, dispatch] = useReducer((angryApp, amount = 1) => {
+
+    return ((angryApp + amount <= 10) ? angryApp + amount : 0);
+  }, 0);
 
   return (
     <div className={(light) ? 'App' : 'App dark'}>
-      <h1>{(angeryApp < 10) ? 'Fancy Buttons!' : "YOU'RE CLICKING TOO MANY BUTTONS!"}</h1>
+      <h1>{(angryApp < 10) ? 'Fancy Buttons!' : "YOU'RE CLICKING TOO MANY BUTTONS!"}</h1>
       <section>
-        <AngryButton increaseAppAnger={increaseAppAnger} />
-        <CounterButton increaseAppAnger={increaseAppAnger} />
-        <LightSwitchButton light={light} toggleLight={toggleLight} increaseAppAnger={increaseAppAnger} />
-        <TextReapeaterButton increaseAppAnger={increaseAppAnger} />
+        <AngryButton increaseAppAnger={dispatch} />
+        <CounterButton increaseAppAnger={dispatch} />
+        <LightSwitchButton light={light} toggleLight={toggleLight} increaseAppAnger={dispatch} />
+        <TextReapeaterButton increaseAppAnger={dispatch} />
       </section>
 
     </div>
